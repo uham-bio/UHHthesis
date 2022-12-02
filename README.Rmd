@@ -35,7 +35,7 @@ if (!require("bookdown")) install.packages("bookdown")
 
 # remotes and UHHthesis
 if (!require("remotes")) install.packages("remotes")
-remotes::install_github("saskiaotto/UHHthesis", build_vignettes = TRUE)
+remotes::install_github("uham-bio/UHHthesis", build_vignettes = TRUE)
 ```
 
 
