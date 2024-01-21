@@ -6,6 +6,7 @@ Date: 2022-07-08
 Authors@R: c(person("Saskia", "Otto", email="saskia.a.otto@gmail.com",
     role=c("aut","cre")))
 Maintainer: Saskia Otto <saskia.a.otto@gmail.com>
+URL: https://github.com/uham-bio/UHHthesis
 Description: This package creates a bookdown project structure with German or English LaTeX and Word thesis 
     templates from the University of Hamburg (UHH), which conform to the submission standards of the MIN
     faculty for Bachelor and Master theses. The package is primarly designed for the Biology Department
@@ -31,4 +32,4 @@ Suggests:
 SystemRequirements: pandoc (>= 2.1) - http://pandoc.org
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3

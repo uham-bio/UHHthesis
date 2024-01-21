@@ -30,6 +30,13 @@ Creates a PDF/LaTeX thesis document inGerman
 Creates a Microsoft Word (docx) thesis document in German
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/uham-bio/UHHthesis}
+}
+
+}
 \author{
 \strong{Maintainer}: Saskia Otto \email{saskia.a.otto@gmail.com}
 
