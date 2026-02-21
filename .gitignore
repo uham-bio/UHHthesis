@@ -1,2 +1,6 @@
 inst/doc
 .Rproj.user
+
+# OS
+.DS_Store
+Thumbs.db
