@@ -214,6 +214,9 @@ $endfor$
 % -----------------------------
 % --- frontmatter: Contents ---
 % -----------------------------
+\pagestyle{plain}
+\pagenumbering{roman}   				% define page number in roman style
+\setcounter{page}{1}    				% start page numbering
 \newpage
 \renewcommand{\contentsname}{Table of Contents}
 \tableofcontents
@@ -224,9 +227,6 @@ $endfor$
 % -----------------------------
 \newpage
 $abstract$
-\pagestyle{plain}
-\pagenumbering{roman}   				% define page number in roman style
-\setcounter{page}{1}    				% start page numbering
 
 % ------------------------------------
 % --- frontmatter: Zusammenfassung ---

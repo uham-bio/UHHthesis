@@ -1,4 +1,4 @@
-\newpage
+\clearpage
 # Declaration of Authorship
 
 *I hereby declare in lieu of an oath that I have authored the present \thesistype{} independently and

@@ -1,19 +1,19 @@
-\appendix
-# Anhang
+\newpage
+# Anhang {-}
 
 Generell gehört alles Relevante in den Text. Irrelevantes wird weggelassen. Inhalte, die mit dem Thema in engem Zusammenhang stehen, aber nicht zwingend erforderlich sind, können in einen Anhang ausgelagert werden. Üblicherweise gilt dies zum Beispiel für Herleitungen von Formeln oder umfangreiche Analysebeschreibungen, Quelltexte von Computerprogrammen oder umfangreiches (Daten-)Material, welches den Text überfrachten würde.
 
 Anhänge müssen ähnlich wie Tabellen oder Abbildungen im Haupttext angesprochen werden und dürfen nicht losgelöst von diesem stehen. Und auch Tabellen und Abbildungen im Anhang brauchen eine Legende.
 
 
-## Abbildungen
+## Abbildungen {-}
 
 ```{r density-plot, fig.cap="Reichweite in der Stadt, gruppiert nach der Anzahl der Zylinder.", out.width='100%'}
 boxplot(mpg ~ cyl, mtcars, col = "orange")
 ```
 
 
-## Tabellen
+## Tabellen {-}
 
 Hier ist eine weitere Tabelle, die mit R Markdown Syntax erstellt wird.
 

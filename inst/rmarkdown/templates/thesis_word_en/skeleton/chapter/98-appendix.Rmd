@@ -1,19 +1,19 @@
-\appendix
-# Appendix
+\newpage
+# Appendix {-}
 
 All relevant information has to be included in the main text. Irrelevant information as to be completely left out. Content that is related to the topic but not essential can be included in the appendix. Such could be the derivation of equations, additional information on statistical or laboratory analyses, source code of computer programs or any other comprehensive (data) material.
 
 The appendix has to be similar to figures and tables cross-referenced and should **not** stand by itself. All figures and tables in the appendix should also have captions.
 
 
-## Figures
+## Figures {-}
 
 ```{r density-plot, fig.cap="Fuel economy in cities, grouped by the number of cylinders.", out.width='100%'}
 boxplot(mpg ~ cyl, mtcars, col = "orange")
 ```
 
 
-## Tables
+## Tables {-}
 
 Here is another table that is created with R Markdown.
 

@@ -1,3 +1,4 @@
+\newpage
 # Abstract {-}
 
 The abstract comes always first and should raise the readers interest in reading further.

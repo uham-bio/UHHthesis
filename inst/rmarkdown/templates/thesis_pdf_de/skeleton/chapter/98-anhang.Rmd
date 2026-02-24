@@ -1,4 +1,4 @@
-\appendix
+\newpage
 # Anhang
 
 Generell gehört alles relevante in den Text. Irrelevantes wird weggelassen. Inhalte, die mit dem Thema in engem Zusammenhang stehen, aber nicht zwingend erforderlich sind, können in einen Anhang ausgelagert werden. Üblicherweise gilt dies zum Beispiel für Herleitungen von Formeln oder umfangreiche Analysebeschreibungen, Quelltexte von Computerprogrammen oder umfangreiches (Daten-)Material, welches den Text überfrachten würde.
