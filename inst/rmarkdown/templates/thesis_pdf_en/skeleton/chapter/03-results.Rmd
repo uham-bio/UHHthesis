@@ -41,67 +41,53 @@ mtcars <- read.csv("data/mtcars.csv")
 # Plot only a subset of the data
 df <- mtcars[1:5, 1:6]
 kable(df, booktabs = T, 
-  caption = "This is a table produced with knitr and modified with kableextra.") %>%
-kable_styling(position = "center", font_size = 9) %>%
+  caption = "This is a table produced with knitr and modified with kableextra.") |>
+kable_styling(position = "center", font_size = 9) |>
 add_header_above(c(" " = 1, "Group 1" = 2, "Group 2" = 2,
-  "Group 3" = 1, "Group 4" = 1)) %>%
-add_header_above(c(" ", "Group 5" = 4, "Group 6" = 2), bold = T) %>%
-footnote(general = "Your comments go here.")
+  "Group 3" = 1, "Group 4" = 1)) |>
+add_header_above(c(" ", "Group 5" = 4, "Group 6" = 2), bold = T) |>
+kableExtra::footnote(general = "Your comments go here.")
 ```
 
 
-#### The *xtable* package
+#### The *flextable* package
 
 &nbsp;
 
-[xtable](https://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf) has become increasingly popular but is not as easy to use as `knitr::kable`. For instance, when using the default settings the table caption is placed *below* the table (see Table \@ref(tab:xtable1)). Also, the label for cross-referencing has to be set inside the `xtable::xtable` function instead of the code chunk. And if you don't write `results='asis'` inside the chunk options, you get the \LaTeX code for the table instead of the actual table in your PDF output file!
+[flextable](https://ardata-fr.github.io/flextable-book/) creates tables that work across PDF and Word output, making it a versatile choice. Table \@ref(tab:flextable1) shows an example. Note that `flextable` uses the `set_caption()` function for cross-referenceable captions:
 
-```{r, results="asis"}
-df <- mtcars[1:3, 1:6]
-xt <- xtable(df, booktabs = TRUE,
-  caption = "This is a table made with 'xtable'.",
-  label = "tab:xtable1")
-print(xt, comment = FALSE)
+```{r flextable1}
+df <- mtcars[1:5, 1:6]
+flextable(df) |>
+  set_caption(caption = "This is a table produced with flextable.") |>
+  autofit() |>
+  theme_booktabs() |>
+  bold(part = "header") |>
+  fontsize(size = 9, part = "all")
 ```
 
-The advantage of the `xtable` package for the advanced R/\LaTeX user is that \LaTeX code can directly be incorporated (see Table \@ref(tab:xtable2)), and also the `xtable::print.xtable` function allows various additional settings.
-
-```{r, results="asis"}
-df <- mtcars[1:3, 1:6]
-large <- function(x){
-paste0('{\\large{\\bfseries{ ', x, '}}}')
-}
-italic <- function(x){
-paste0('{\\emph{ ', x, '}}')
-}
-
-print(xtable(df,
-    caption = "This is a table made with 'xtable' and modified with LaTeX Code and the print.xtable function.",
-    label = "tab:xtable2"),
-  sanitize.rownames.function = italic,
-  sanitize.colnames.function = large,
-  caption.placement = "top",
-  booktabs = TRUE,
-  comment=FALSE)
-```
+> **Tip:** Another excellent table package is [gt](https://gt.rstudio.com/), which provides a tidyverse-friendly grammar of tables. However, its PDF support is still maturing, so `kableExtra` (PDF) and `flextable` (PDF + Word) remain the most reliable choices for theses.
 
 
 ## Figures
 
-Figures can directly be produced with R and displayed here. Similar to external images, figure captions and labels are placed inside the chunk options for cross-referencing (see Figure \@ref(fig:base-fig)).
+Figures can directly be produced with R and displayed here. Since most students use *ggplot2*, the examples below use it. Similar to external images, figure captions and labels are placed inside the chunk options for cross-referencing (see Figure \@ref(fig:scatter-fig)).
 
-```{r base-fig, fig.cap = "Relationship between horsepower and fuel economy.", out.width='100%'}
-plot(mtcars$hp, mtcars$mpg,
-xlab = "Gross Horsepower",
-ylab = "Miles Per Gallon",
-pch = 19)
-abline(lm(mpg ~ hp, data = mtcars), col = "red")
+```{r scatter-fig, fig.cap = "Relationship between horsepower and fuel economy.", out.width='100%'}
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Gross Horsepower", y = "Miles Per Gallon") +
+  theme_minimal()
 ```
 
-Purely for demonstration purposes, figure \@ref(fig:boxplot-fig) shows a boxplot with just half the width and centered: 
+Purely for demonstration purposes, Figure \@ref(fig:boxplot-fig) shows a boxplot with just half the width and centered:
 
 ```{r boxplot-fig, fig.cap = "Fuel differences between transmission types (0 = automatic, 1 = manual).", out.width='50%', fig.height = 3, fig.align='center'}
-boxplot(mpg ~ am, mtcars)
+ggplot(mtcars, aes(x = factor(am), y = mpg)) +
+  geom_boxplot() +
+  labs(x = "Transmission (0 = automatic, 1 = manual)", y = "Miles Per Gallon") +
+  theme_minimal()
 ```
 
 

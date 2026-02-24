@@ -41,67 +41,53 @@ mtcars <- read.csv("data/mtcars.csv")
 # Plotten eines Teildatensatzes
 df <- mtcars[1:5, 1:6]
 kable(df, booktabs = TRUE,
-  caption = "Dies ist eine mit knitr::kable() erzeugte und mit kableextra modifizierte Tabelle.") %>%
-kable_styling(position = "center", font_size = 9) %>%
+  caption = "Dies ist eine mit knitr::kable() erzeugte und mit kableextra modifizierte Tabelle.") |>
+kable_styling(position = "center", font_size = 9) |>
 add_header_above(c(" " = 1, "Gruppe 1" = 2, "Gruppe 2" = 2,
-"Gruppe 3" = 1, "Gruppe 4" = 1)) %>%
-add_header_above(c(" ", "Gruppe 5" = 4, "Gruppe 6" = 2), bold = T) %>%
-footnote(general = "Hier kommen Deine Kommentare rein.")
+"Gruppe 3" = 1, "Gruppe 4" = 1)) |>
+add_header_above(c(" ", "Gruppe 5" = 4, "Gruppe 6" = 2), bold = T) |>
+kableExtra::footnote(general = "Hier kommen Deine Kommentare rein.")
 ```
 
 
-#### Das `xtable` Paket
+#### Das `flextable` Paket
 
 &nbsp;
 
-[xtable](https://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf) erfreut sich großer Beliebtheit, hat allerdings auch seine Nachteile. Zum Beispiel erscheint die Tabellenbeschriftung in der Standardeinstellung unterhalb der Tabelle (siehe Tabelle \@ref(tab:xtable1)). Für den Querverweis muss bei `xtable` auch das Label in der Funktion selbst definiert werden, nicht bei den Codeschipsel bzw 'chunk' Optionen! Und wenn nicht als Codeschipsel Option `results='asis'` angegeben ist, ist der Output der \LaTeX Code der Tabelle zu sehen und nicht die Tabelle selbst.
+[flextable](https://ardata-fr.github.io/flextable-book/) erstellt Tabellen, die sowohl in PDF als auch in Word funktionieren. Tabelle \@ref(tab:flextable1) zeigt ein Beispiel. Beachte, dass `flextable` die Funktion `set_caption()` fuer die Beschriftung nutzt:
 
-```{r, results="asis"}
-df <- mtcars[1:3, 1:6]
-xt <- xtable(df, booktabs = TRUE,
-  caption = "Dies ist eine 'xtable' Tabelle.",
-  label = "tab:xtable1")
-print(xt, comment = FALSE)
+```{r flextable1}
+df <- mtcars[1:5, 1:6]
+flextable(df) |>
+  set_caption(caption = "Dies ist eine mit flextable erzeugte Tabelle.") |>
+  autofit() |>
+  theme_booktabs() |>
+  bold(part = "header") |>
+  fontsize(size = 9, part = "all")
 ```
 
-Der Vorteil von `xtable` für den versierten R/\LaTeX Nutzer ist allerdings, dass man \LaTeX Code direkt einbauen kann, um die Tabelle zu gestalten (siehe Tabelle \@ref(tab:xtable2)) und auch die `xtable::print.xtable` Funktion erlaubt mehr Anpassungen. Somit lassen sich die Nachteile wieder umgehen.
-
-```{r, results="asis"}
-df <- mtcars[1:3, 1:6]
-large <- function(x){
-paste0('{\\large{\\bfseries{ ', x, '}}}')
-}
-italic <- function(x){
-paste0('{\\emph{ ', x, '}}')
-}
-
-print(xtable(df,
-    caption = "Dies ist eine 'xtable' Tabelle kombiniert mit LaTeX Code.",
-    label = "tab:xtable2"),
-  sanitize.rownames.function = italic,
-  sanitize.colnames.function = large,
-  caption.placement = "top",
-  booktabs = TRUE,
-  comment=FALSE)
-```
+> **Tipp:** Ein weiteres empfehlenswertes Paket ist [gt](https://gt.rstudio.com/), das eine tidyverse-kompatible Syntax bietet. Da die PDF-Unterstuetzung noch nicht vollstaendig ausgereift ist, bleiben `kableExtra` (PDF) und `flextable` (PDF + Word) die zuverlaessigsten Optionen.
 
 
 ## Abbildungen
 
-Abbildungen können direkt mit R erstellt und hier angezeigt werden. Wie bei externen Abbildungen wird die Abbildungsbeschriftung und der Name für Querverweise direkt in den Codeschipsel Optionen festgelegt (siehe Abb. \@ref(fig:base-fig)).
+Abbildungen können direkt mit R erstellt und hier angezeigt werden. Wie bei externen Abbildungen wird die Abbildungsbeschriftung und der Name für Querverweise direkt in den Codeschipsel Optionen festgelegt (siehe Abb. \@ref(fig:scatter-fig)). Da die meisten Studierenden *ggplot2* verwenden, nutzen die folgenden Beispiele dieses Paket.
 
-```{r base-fig, fig.cap = "Beziehung zwischen Gesamtpferdestärke und der Reichweite verschiedener Autotypen.", out.width='100%'}
-plot(mtcars$hp, mtcars$mpg,
-xlab = "Pferdestärke",
-ylab = "Reichweite (in Meilen pro Gallone)",
-pch = 19)
-abline(lm(mpg ~ hp, data = mtcars), col = "red")
+```{r scatter-fig, fig.cap = "Beziehung zwischen Gesamtpferdestaerke und der Reichweite verschiedener Autotypen.", out.width='100%'}
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Pferdestaerke", y = "Reichweite (Meilen pro Gallone)") +
+  theme_minimal()
 ```
 
 Hier zum Vergleich in Abb. \@ref(fig:boxplot-fig) ein Boxplot mit einer anderen Abbildungsgröße. 
 
 ```{r boxplot-fig, fig.cap = "Unterschiede der Reichweite zwischen den beiden Getriebearten (0 = automatisch, 1 = manuell).", out.width='50%', fig.width=5, fig.height=3, fig.align='center'}
-boxplot(mpg ~ am, mtcars)
+ggplot(mtcars, aes(x = factor(am), y = mpg)) +
+  geom_boxplot() +
+  labs(x = "Getriebe (0 = automatisch, 1 = manuell)", y = "Reichweite (Meilen pro Gallone)") +
+  theme_minimal()
 ```
 
 

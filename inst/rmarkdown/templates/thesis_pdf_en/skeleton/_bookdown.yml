@@ -5,8 +5,8 @@ rmd_files: ["index.Rmd",
   "chapter/03-results.Rmd",
   "chapter/04-discussion.Rmd",
   "chapter/96-references.Rmd",
-  "chapter/97-appendix.Rmd",
-  "chapter/98-acknowledge.Rmd",
+  "chapter/97-acknowledge.Rmd",
+  "chapter/98-appendix.Rmd",
   "chapter/99-declaration.Rmd",
   ]
 output_dir: "thesis-output"

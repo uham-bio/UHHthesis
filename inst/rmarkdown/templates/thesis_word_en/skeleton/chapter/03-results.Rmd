@@ -50,42 +50,41 @@ knitr::kable(
 ```
 
 
-#### The *huxtable* package
+#### The *flextable* package
 
-If you are interested in further table adaptations for Word output, I highly recommend a look at the R package ['huxtable'](https://hughjonesd.github.io/huxtable/index.html). Table \@ref(tab:huxtable) is an example of a table representation with 'huxtable':
+[flextable](https://ardata-fr.github.io/flextable-book/) creates tables that work well in both Word and PDF output. Table \@ref(tab:flextable1) shows an example:
 
-```{r huxtable}
+```{r flextable1}
 df <- mtcars[1:5, 1:6]
-ht <- as_hux(df, add_rownames = "model")
-ht <- set_outer_borders(ht, 0.4)
-bold(ht)[1,]           <- TRUE
-bottom_border(ht)[1,]  <- 0.4
-align(ht)[,2:7]          <- 'right'
-align(ht)[,1]          <- 'left'
-number_format(ht)      <- 2
-width(ht)              <- 1
-caption(ht)            <- "Overview of the first lines and columns in the mtcars dataset."
-
-ht
+flextable(df) |>
+  set_caption(caption = "Overview of the first lines and columns in the mtcars dataset.") |>
+  autofit() |>
+  theme_booktabs() |>
+  bold(part = "header")
 ```
+
+> **Tip:** Another excellent table package is [gt](https://gt.rstudio.com/), which provides a tidyverse-friendly grammar of tables.
 
 
 ## Figures
 
-Figures can directly be produced with R and displayed here. Similar to external images, figure captions and labels are placed inside the chunk options for cross-referencing (see Fig. \@ref(fig:base-fig)).
+Figures can directly be produced with R and displayed here. The [ggplot2](https://ggplot2.tidyverse.org/) package provides a powerful and flexible system for creating publication-quality graphics. Similar to external images, figure captions and labels are placed inside the chunk options for cross-referencing (see Fig. \@ref(fig:scatter-fig)).
 
-```{r base-fig, fig.cap = "Relationship between horsepower and fuel economy."}
-plot(mtcars$hp, mtcars$mpg,
-xlab = "Gross Horsepower",
-ylab = "Miles Per Gallon",
-pch = 19)
-abline(lm(mpg ~ hp, data = mtcars), col = "red")
+```{r scatter-fig, fig.cap = "Relationship between horsepower and fuel economy."}
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Gross Horsepower", y = "Miles Per Gallon") +
+  theme_minimal()
 ```
 
 Here for comparison a boxplot with a different image height (Fig. \@ref(fig:boxplot-fig)).
 
 ```{r boxplot-fig, fig.cap = "Fuel differences between transmission types (0 = automatic, 1 = manual).", fig.height = 3}
-boxplot(mpg ~ am, mtcars)
+ggplot(mtcars, aes(x = factor(am), y = mpg)) +
+  geom_boxplot() +
+  labs(x = "Transmission (0 = automatic, 1 = manual)", y = "Miles Per Gallon") +
+  theme_minimal()
 ```
 
 

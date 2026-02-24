@@ -8,7 +8,7 @@ The appendix has to be similar to figures and tables cross-referenced and should
 
 ## Figures
 
-```{r density-plot, fig.cap="Fuel economy in cities, grouped by the number of cylinders", out.width='100%'}
+```{r density-plot, fig.cap="Fuel economy in cities, grouped by the number of cylinders.", out.width='100%'}
 boxplot(mpg ~ cyl, mtcars, col = "orange")
 ```
 
@@ -34,3 +34,7 @@ boxplot(mpg ~ cyl, mtcars, col = "orange")
     \end{center}
 \end{table}
 
+Here is another variant of programming a table with \LaTeX syntax.
+
+<!-- If you want the next chapter to start on a new page type -->
+\newpage

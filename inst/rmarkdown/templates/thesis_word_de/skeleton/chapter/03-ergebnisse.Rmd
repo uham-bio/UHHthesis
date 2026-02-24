@@ -49,43 +49,42 @@ knitr::kable(
 # (die letzten beiden Optionen machen die Tabelle etwas übersichtlicher)
 ```
 
-#### Das Pakete `huxtable` 
+#### Das Paket `flextable`
 
-Falls Interesse an weiteren Tabellenanpassungen besteht, empfiehlt sich ein Blick in das R Paket ['huxtable'](https://hughjonesd.github.io/huxtable/index.html). Tabelle \@ref(tab:huxtable) ist ein Beispiel für eine Tabellendarstellung mit 'huxtable':
+[flextable](https://ardata-fr.github.io/flextable-book/) erstellt Tabellen, die sowohl im Word- als auch im PDF-Output gut funktionieren. Tabelle \@ref(tab:flextable1) zeigt ein Beispiel:
 
-```{r huxtable}
+```{r flextable1}
 df <- mtcars[1:5, 1:6]
-ht <- as_hux(df, add_rownames = "model")
-ht <- set_outer_borders(ht, 0.4)
-bold(ht)[1,]           <- TRUE
-bottom_border(ht)[1,]  <- 0.4
-align(ht)[,2:7]          <- 'right'
-align(ht)[,1]          <- 'left'
-number_format(ht)      <- 2
-width(ht)              <- 1
-caption(ht)            <- "Übersicht der ersten Zeilen und Spalten im mtcars Datensatz."
-
-ht
+flextable(df) |>
+  set_caption(caption = "Übersicht der ersten Zeilen und Spalten im mtcars Datensatz.") |>
+  autofit() |>
+  theme_booktabs() |>
+  bold(part = "header")
 ```
+
+> **Tipp:** Ein weiteres hervorragendes Tabellenpaket ist [gt](https://gt.rstudio.com/), das eine tidyverse-kompatible Grammatik für Tabellen bereitstellt.
 
   
 
 ## Abbildungen
 
-Abbildungen können direkt mit R erstellt und hier angezeigt werden. Wie bei externen Abbildungen wird die Abbildungsbeschriftung und der Name für Querverweise direkt in den Codeschipsel Optionen festgelegt (siehe Abb. \@ref(fig:base-fig)).
+Abbildungen können direkt mit R erstellt und hier angezeigt werden. Das Paket [ggplot2](https://ggplot2.tidyverse.org/) bietet ein leistungsfähiges und flexibles System zur Erstellung von publikationsreifen Grafiken. Wie bei externen Abbildungen wird die Abbildungsbeschriftung und der Name für Querverweise direkt in den Codeschnipsel Optionen festgelegt (siehe Abb. \@ref(fig:scatter-fig)).
 
-```{r base-fig, fig.cap = "Beziehung zwischen Gesamtpferdestärke und der Reichweite verschiedener Autotypen."}
-plot(mtcars$hp, mtcars$mpg,
-xlab = "Pferdestärke",
-ylab = "Reichweite (in Meilen pro Gallone)",
-pch = 19)
-abline(lm(mpg ~ hp, data = mtcars), col = "red")
+```{r scatter-fig, fig.cap = "Beziehung zwischen Gesamtpferdestärke und der Reichweite verschiedener Autotypen."}
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Pferdestärke", y = "Reichweite (in Meilen pro Gallone)") +
+  theme_minimal()
 ```
 
 Hier zum Vergleich in Abb. \@ref(fig:boxplot-fig) ein Boxplot mit einer anderen Abbildungshöhe.
 
 ```{r boxplot-fig, fig.cap = "Unterschiede der Reichweite zwischen den beiden Getriebearten (0 = automatisch, 1 = manuell).", fig.height=3}
-boxplot(mpg ~ am, mtcars)
+ggplot(mtcars, aes(x = factor(am), y = mpg)) +
+  geom_boxplot() +
+  labs(x = "Getriebe (0 = automatisch, 1 = manuell)", y = "Reichweite (in Meilen pro Gallone)") +
+  theme_minimal()
 ```
 
 

@@ -1,35 +1,34 @@
 Package: UHHthesis
 Type: Package
 Title: R Markdown Templates for Bachelor or Master Thesis at the UHH
-Version: 0.1.9000
-Date: 2022-07-08
-Authors@R: c(person("Saskia", "Otto", email="saskia.a.otto@gmail.com",
-    role=c("aut","cre")))
-Maintainer: Saskia Otto <saskia.a.otto@gmail.com>
+Version: 0.2.0
+Date: 2026-02-23
+Authors@R: c(person("Saskia", "Otto", email = "saskia.a.otto@gmail.com",
+    role = c("aut", "cre")))
 URL: https://github.com/uham-bio/UHHthesis
-Description: This package creates a bookdown project structure with German or English LaTeX and Word thesis 
+Description: This package creates a bookdown project structure with German or English LaTeX and Word thesis
     templates from the University of Hamburg (UHH), which conform to the submission standards of the MIN
-    faculty for Bachelor and Master theses. The package is primarly designed for the Biology Department
-    and its new 'Data Science in Biology' program. It aims aims to encourage reproducible research using simple 
-    Markdown syntax while embedding all of the R code to produce plots and analyses as well. This package is 
+    faculty for Bachelor and Master theses. The package is primarily designed for the Biology Department
+    and its different BSc and MSc programs. It aims to encourage reproducible research using simple
+    Markdown syntax while embedding all of the R code to produce plots and analyses as well. This package is
     a customized version of the original 'thesisdown' package.
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
 Depends:
-    R(>= 4.0.0)
-Imports: 
+    R(>= 4.2.0)
+Imports:
     bookdown,
     knitr,
-    rmarkdown (>= 2.14),
-    R.utils,
-    utils
+    rmarkdown (>= 2.25),
+    R.utils
 Suggests:
+    flextable,
+    ggplot2,
     huxtable,
     kableExtra,
-    tinytex (>= 0.40),
-    xtable
-SystemRequirements: pandoc (>= 2.1) - http://pandoc.org
+    tinytex (>= 0.50)
+SystemRequirements: pandoc (>= 2.19) - http://pandoc.org
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3

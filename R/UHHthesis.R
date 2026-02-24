@@ -9,7 +9,7 @@
 #' @section thesis_word_en:
 #' Creates a Microsoft Word (docx) thesis document in English
 #' @section thesis_pdf_de:
-#' Creates a PDF/LaTeX thesis document inGerman
+#' Creates a PDF/LaTeX thesis document in German
 #' @section thesis_word_de:
 #' Creates a Microsoft Word (docx) thesis document in German
 #' @docType package

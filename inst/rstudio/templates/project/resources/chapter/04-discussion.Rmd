@@ -17,3 +17,7 @@ Providing strict guidelines and rules for a good discussion is difficult. But th
 
 - Which *take home messages* do you like to give the reader? What is the relevance of your study for future research and potential applications? Suggest issues for future research.
 - One *final sentence* the complete the thesis.
+
+
+<!-- If you want the next chapter to start on a new page type -->
+\newpage

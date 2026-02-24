@@ -54,8 +54,9 @@ thesis_pdf_de <- function(toc = TRUE, toc_depth = 5, highlight = "default",
 
   old_opt <- getOption("bookdown.post.latex")
   options(bookdown.post.latex = fix_envs)
-  on.exit(options(bookdown.post.late = old_opt))
+  on.exit(options(bookdown.post.latex = old_opt))
 
+  base <- fix_highlight_args(base)
   return(base)
 }
 
@@ -88,8 +89,9 @@ thesis_pdf_en <- function(toc = TRUE, toc_depth = 5, highlight = "default",
 
   old_opt <- getOption("bookdown.post.latex")
   options(bookdown.post.latex = fix_envs)
-  on.exit(options(bookdown.post.late = old_opt))
+  on.exit(options(bookdown.post.latex = old_opt))
 
+  base <- fix_highlight_args(base)
   return(base)
 }
 
@@ -150,6 +152,7 @@ thesis_word_de <- function(toc = TRUE, toc_depth = 5, number_sections = TRUE,
   base$knitr$opts_chunk$comment   <- NA
   base$knitr$opts_chunk$dpi <- dpi
 
+  base <- fix_highlight_args(base)
   return(base)
 }
 
@@ -176,13 +179,35 @@ thesis_word_en <- function(toc = TRUE, toc_depth = 5, number_sections = TRUE,
   base$knitr$opts_chunk$comment   <- NA
   base$knitr$opts_chunk$dpi <- dpi
 
+  base <- fix_highlight_args(base)
   return(base)
 }
 
 
 
 
-### Helper function
+### Helper functions
+
+# Replace deprecated --highlight-style with --syntax-highlighting (pandoc >= 3)
+fix_highlight_args <- function(fmt) {
+  if (rmarkdown::pandoc_available("3.0")) {
+    args <- fmt$pandoc$args
+    # Handle "--highlight-style" "value" (two separate elements)
+    idx <- which(args == "--highlight-style")
+    if (length(idx) > 0) {
+      args[idx] <- "--syntax-highlighting"
+      fmt$pandoc$args <- args
+    } else {
+      # Handle "--highlight-style=value" (single element)
+      idx <- grep("^--highlight-style=", args)
+      if (length(idx) > 0) {
+        args[idx] <- sub("^--highlight-style=", "--syntax-highlighting=", args[idx])
+        fmt$pandoc$args <- args
+      }
+    }
+  }
+  fmt
+}
 
 fix_envs = function(x) {
   beg_reg <- '^\\s*\\\\begin\\{.*\\}'
