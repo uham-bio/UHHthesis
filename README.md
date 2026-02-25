@@ -3,6 +3,11 @@
 
 # UHHthesis <img src="vignettes/images/UHHthesis_logo.png" align="right" width="100" height="100"/>
 
+[![Author: Saskia
+Otto](https://img.shields.io/badge/author-Saskia%20Otto-blue)](https://github.com/saskiaotto)
+[![License:
+MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 This package is a customized version of the original
 [thesisdown](https://github.com/ismayc/thesisdown) package developed by
 Chester Ismay for the Reed College. It creates a *bookdown* project
@@ -14,7 +19,21 @@ UHH student. It aims to encourage students to conduct reproducible
 research using simple Markdown syntax while embedding all of the R code
 to produce plots and analyses as well.
 
-The package contains currently four templates:
+> UPDATE: **Looking for the Quarto version?** Want to combine R with
+> Python or Julia, work in Positron, VS Code, or another editor of your
+> choice, and use the latest publishing framework? The check out our
+> latest tool
+> [quarto-UHHthesis](https://github.com/uham-bio/quarto-UHHthesis) — the
+> recommended choice for all new thesis projects.
+
+> **Thesis Guide:** General guidance on planning, structuring, and
+> writing your BSc or MSc thesis —from the initial research question to
+> the final submission: [English
+> (PDF)](https://github.com/uham-bio/quarto-UHHthesis/blob/main/docs/Guide_Thesis_BSc_MSc_TheSans.pdf?raw=true)
+> \| [Deutsch
+> (PDF)](https://github.com/uham-bio/quarto-UHHthesis/blob/main/docs/Leitfaden_Abschlussarbeit_BSc_MSc_TheSans.pdf?raw=true)
+
+The *UHHthesis* package contains currently four templates:
 
 1.  [PDF output for thesis written in
     German](https://github.com/saskiaotto/UHHthesis/blob/master/resources/examples/ex_thesis_pdf_de.pdf)
@@ -293,3 +312,12 @@ Repository](https://github.com/citation-style-language/styles#readme).
   - The online book [Happy Git and GitHub for the
     useR](https://happygitwithr.com/) is a novice-friendly guide to
     getting starting with using Git with R and RStudio.
+
+------------------------------------------------------------------------
+
+## Author
+
+**Saskia Otto** University of Hamburg · Department of Biology ·
+Institute of Marine Ecosystem and Fisheries Science ·
+[GitHub](https://github.com/saskiaotto) ·
+[Website](https://www.biologie.uni-hamburg.de/forschung/marine-oekosystemdynamik/mitarbeiter/otto-saskia.html)
