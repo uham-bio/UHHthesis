@@ -3,16 +3,16 @@ Type: Package
 Title: R Markdown Templates for Bachelor or Master Thesis at the UHH
 Version: 0.2.0
 Date: 2026-02-23
-Authors@R: c(person("Saskia", "Otto", email = "saskia.a.otto@gmail.com",
-    role = c("aut", "cre")))
-URL: https://github.com/uham-bio/UHHthesis
+Authors@R: person("Saskia", "Otto", email = "saskia.a.otto@gmail.com",
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0001-7780-1322"))
+URL: https://uham-bio.github.io/UHHthesis, https://github.com/uham-bio/UHHthesis
 Description: This package creates a bookdown project structure with German or English LaTeX and Word thesis
     templates from the University of Hamburg (UHH), which conform to the submission standards of the MIN
     faculty for Bachelor and Master theses. The package is primarily designed for the Biology Department
     and its different BSc and MSc programs. It aims to encourage reproducible research using simple
     Markdown syntax while embedding all of the R code to produce plots and analyses as well. This package is
     a customized version of the original 'thesisdown' package.
-License: CC BY 4.0
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
