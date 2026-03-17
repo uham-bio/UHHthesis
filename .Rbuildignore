@@ -6,7 +6,7 @@
 ^README-.*\.png$
 ^cran-comments\.md$
 ^CODE_OF_CONDUCT\.md$
-^LICENSE$
+^LICENSE\.md$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
