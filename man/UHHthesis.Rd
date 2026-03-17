@@ -33,11 +33,12 @@ Creates a Microsoft Word (docx) thesis document in German
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://uham-bio.github.io/UHHthesis}
   \item \url{https://github.com/uham-bio/UHHthesis}
 }
 
 }
 \author{
-\strong{Maintainer}: Saskia Otto \email{saskia.a.otto@gmail.com}
+\strong{Maintainer}: Saskia Otto \email{saskia.a.otto@gmail.com} (\href{https://orcid.org/0000-0001-7780-1322}{ORCID})
 
 }

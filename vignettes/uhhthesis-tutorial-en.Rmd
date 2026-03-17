@@ -1,230 +1,34 @@
 ---
-title: "Tutorial: Writing Your Thesis with UHHthesis"
+title: "Writing Your Thesis with UHHthesis"
 output: rmarkdown::html_vignette
 description: >
-  Comprehensive tutorial covering R Markdown basics, figures, tables,
-  citations, cross-references, and troubleshooting for the UHHthesis package.
+  Complete reference for YAML configuration, R Markdown syntax, figures, tables,
+  equations, citations, cross-references, and troubleshooting for the UHHthesis package.
 vignette: >
-  %\VignetteIndexEntry{Tutorial: Writing Your Thesis with UHHthesis}
+  %\VignetteIndexEntry{Writing Your Thesis with UHHthesis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-This tutorial covers everything you need to write your BSc or MSc thesis using the **UHHthesis** R package. It is a self-contained reference you can consult at any point while writing.
+This reference covers everything you need once your thesis project is set up. For installation and project creation, see [Getting Started](uhhthesis-getting-started-en.html).
 
 > **Golden rule:** Only ever knit `index.Rmd`. Never knit individual chapter files.
 
----
-
-
+::: {.pkgdown-hide}
 ## Table of Contents
 
-1. [Prerequisites](#1-prerequisites)
-2. [Creating Your Thesis Project](#2-creating-your-thesis-project)
-3. [Project Structure](#3-project-structure)
-4. [Rendering Your Thesis](#4-rendering-your-thesis)
-5. [YAML Configuration](#5-yaml-configuration)
-6. [R Markdown Basics](#6-r-markdown-basics)
-7. [Figures](#7-figures)
-8. [Tables](#8-tables)
-9. [Mathematical Equations and Chemical Formulas](#9-mathematical-equations-and-chemical-formulas)
-10. [Citations and Bibliography](#10-citations-and-bibliography)
-11. [Cross-References Summary](#11-cross-references-summary)
-12. [Tips and Troubleshooting](#12-tips-and-troubleshooting)
-
----
-
-
-## 1. Prerequisites
-
-### Software
-
-- **R** (>= 4.2.0) --- download from <https://cran.r-project.org/>
-- **RStudio** (recommended) or **Positron** --- download from <https://posit.co/download/rstudio-desktop/>
-- **A LaTeX distribution** (required for PDF output):
-  - *Recommended:* **TinyTeX** --- lightweight and installs missing packages automatically. Install it from within R:
-
-    ```r
-    install.packages("tinytex")
-    tinytex::install_tinytex()
-    ```
-
-  - *Alternatives:*
-    - macOS: [MacTeX](https://tug.org/mactex/)
-    - Windows: [MikTeX](https://miktex.org/)
-    - Linux: TeX Live (install via your package manager)
-
-### R packages
-
-Install the UHHthesis package and its key dependency **bookdown**:
-
-```r
-if (!require("bookdown")) install.packages("bookdown")
-if (!require("remotes"))  install.packages("remotes")
-remotes::install_github("uham-bio/UHHthesis")
-```
-
-The template also uses these packages (installed automatically with most R setups, but install manually if needed):
-
-```r
-install.packages(c("knitr", "kableExtra", "flextable", "rmarkdown"))
-```
-
----
-
-
-## 2. Creating Your Thesis Project
-
-There are two ways to create a new thesis project. **Method 2 is recommended** because it names the main file correctly for you.
-
-### Method 1 --- From Template
-
-1. In RStudio: **File > New File > R Markdown > From Template**
-2. Select one of the UHHthesis templates:
-
-```{r, echo=FALSE, fig.align='center', fig.alt="RStudio dialog showing the UHHthesis templates"}
-knitr::include_graphics("images/img_create_document.jpg")
-```
-
-3. Choose a directory name and location, then click **OK**
-4. **Important:** Rename the generated `skeleton.Rmd` to **`index.Rmd`**. The build will fail if this file is not called `index.Rmd`.
-
-```{r, echo=FALSE, fig.align='center', out.width="100%", fig.alt="Renaming skeleton.Rmd to index.Rmd in the RStudio Files pane"}
-knitr::include_graphics("images/img_rename_index_file.png")
-```
-
-### Method 2 --- New Project (recommended)
-
-1. In RStudio: **File > New Project > New Directory**
-2. Select **Thesis Project using UHHthesis (English PDF)** from the dropdown:
-
-```{r, echo=FALSE, fig.align='center', out.width="100%", fig.alt="RStudio New Project dialog with UHHthesis option"}
-knitr::include_graphics("images/img_create_project.jpg")
-```
-
-3. Choose a directory name and location, then click **Create Project**
-4. The project is ready --- `index.Rmd` is already named correctly.
-
----
-
-
-## 3. Project Structure
-
-After creating your project you will see the following files and folders:
-
-```
-your-thesis/
-├── index.Rmd              # Main file -- the ONLY file you knit
-├── _bookdown.yml          # Chapter order and output settings
-├── template.tex           # LaTeX template (do not edit unless advanced)
-├── chapter/
-│   ├── 01-intro.Rmd       # Introduction
-│   ├── 02-methods.Rmd     # Material and Methods
-│   ├── 03-results.Rmd     # Results
-│   ├── 04-discussion.Rmd  # Discussion
-│   ├── 96-references.Rmd  # References (auto-generated, do not edit)
-│   ├── 97-acknowledge.Rmd # Acknowledgements (optional)
-│   ├── 98-appendix.Rmd    # Appendix (optional)
-│   └── 99-declaration.Rmd # Declaration of Authorship (obligatory)
-├── prelim/
-│   ├── 00-abstract.Rmd        # English abstract
-│   ├── 00-zusammenfassung.Rmd # German summary
-│   └── 00-abbreviations.Rmd   # List of abbreviations (optional)
-├── bib/
-│   ├── references.bib     # Your literature references (edit this)
-│   ├── packages.bib       # Auto-generated R package references
-│   └── sage-harvard.csl   # Citation style (replaceable)
-├── data/                  # Place your data files here
-├── images/                # Logos and external images
-│   ├── uhh_logo.png
-│   ├── min_logo.png
-│   └── sampling_site.jpg  # Example image (replace with your own)
-└── thesis-output/         # Generated PDF/Word files appear here
-```
-
-### What each component does
-
-#### `index.Rmd`
-
-This file contains the [YAML](https://yaml.org/) header, i.e. all meta information, which must appear at the beginning of your document. The file should not contain anything other than the YAML header and the few code chunks that follow! The text you'll see after the code chunks is for your information only and should be deleted once you have read it. 
-
-The first lines in the YAML header configure the title page. Modify these as needed. In the following lines you will find comments explaining which entries must remain unchanged and which you may edit.
-
-**Always knit this file th build the thesis.** 
-
-#### `_bookdown.yml`
-
-This is the main configuration file for your thesis. It determines which .Rmd files are included in the output and in what order. Arrange the order of your chapters in this file and ensure that the filenames match those in the corresponding folders.
-
-#### `prelim/`
-
-This folder contains .Rmd files for the sections that appear before the main part of your thesis, i.e. the *Abstract*, *Zusammenfassung* (the German summary), and the *List of Abbreviations* (optional). The *List of Tables* and *List of Figures* are also optional and are generated automatically, so no additional .Rmd files are required.
-
-#### `chapter/`
-
-This folder contains the .Rmd files for each chapter in your thesis (e.g. `01-intro.Rmd`, `02-methods.Rmd`, etc.). **Write your thesis in these files**. If you're working in RStudio, you may find the package [wordcountaddin](https://github.com/benmarwick/wordcountaddin) useful for obtaining word counts and readability statistics in R Markdown documents.
-
-This folder also contains the back matter (i.e. reference list, acknowledgements, supporting tables and figures from your method and result sections, and your declaration of authorship). 
-*Please note: the file* `96-references.Rmd` *is generated automatically. You do not need to add or modify anything in this file!*
-
-#### `bib/`
-
-This folder contains the bibliography files. Add your references to `references.bib`. The file `packages.bib` file is generated automatically. 
-
-#### `data/` and `images/`
-
-Store your data files and all images that are embedded in your thesis here and reference them in your R Markdown files. See the *method* chapter in the template and chapter [2.2.1](https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html#equations) in the bookdown online documentation for details on cross-referencing tables and figures in R Markdown.
-
-#### `thesis-output/`
-
-Created automatically when you knit the project. Contains the final PDF or Word file. 
-
----
-
-
-## 4. Rendering Your Thesis
-
-### Building the PDF
-
-Open `index.Rmd` in RStudio and click the **Knit** button (or press `Ctrl+Shift+K` / `Cmd+Shift+K`):
-
-```{r, echo=FALSE, fig.align='center', out.width="75%", fig.alt="Knit button in RStudio for index.Rmd"}
-knitr::include_graphics("images/img_knit_index_file.png")
-```
-
-You can also render from the R console:
-
-```r
-bookdown::render_book("index.Rmd")
-```
-
-The output file (`thesis.pdf`) appears in the `thesis-output/` folder.
-
-### Important rules
-
-- **Only knit `index.Rmd`** --- never knit individual chapter files. Bookdown merges all chapters listed in `_bookdown.yml` into one document.
-- If you get an error about a missing LaTeX package, install it with:
-
-  ```r
-  tinytex::tlmgr_install("packagename")
-  ```
-
-  TinyTeX usually does this automatically, but occasionally you need to install a package manually.
-
-### Switching to Word output
-
-To produce a Word document instead of PDF, change the `output` line in the YAML header of `index.Rmd`:
-
-```yaml
-output: UHHthesis::thesis_word_en
-```
-
-The Word output uses a reference template (`uhh-template.docx`) for styling. Note that some LaTeX-specific features (e.g., `\newpage`, LaTeX tables) will not render in Word output.
-
----
-
-
-## 5. YAML Configuration
+1. [YAML Configuration](#1-yaml-configuration)
+2. [R Markdown Basics](#2-r-markdown-basics)
+3. [Figures](#3-figures)
+4. [Tables](#4-tables)
+5. [Mathematical Equations and Chemical Formulas](#5-mathematical-equations-and-chemical-formulas)
+6. [Citations and Bibliography](#6-citations-and-bibliography)
+7. [Cross-References Summary](#7-cross-references-summary)
+8. [Tips and Troubleshooting](#8-tips-and-troubleshooting)
+:::
+
+
+## 1. YAML Configuration
 
 The YAML header at the top of `index.Rmd` controls the title page, bibliography, and document options. Here is the default header with explanations:
 
@@ -281,7 +85,7 @@ Change the `header-includes` line to adjust line spacing:
 ---
 
 
-## 6. R Markdown Basics
+## 2. R Markdown Basics
 
 R Markdown files (`.Rmd`) combine plain text with R code. Here is a quick reference for the most common formatting elements.
 
@@ -405,12 +209,12 @@ Here is an overview of commonly used chunk options:
 
 The defaults for `echo`, `warning`, and `message` are typically set globally in the setup chunk of `index.Rmd` (via `knitr::opts_chunk$set()`), so you do not need to repeat them in every chunk.
 
-For figure and table-specific options, see [Figures](#7-figures) and [Tables](#8-tables).
+For figure and table-specific options, see [Figures](#3-figures) and [Tables](#4-tables).
 
 ---
 
 
-## 7. Figures
+## 3. Figures
 
 ### External images
 
@@ -479,7 +283,7 @@ As shown in Figure \@ref(fig:scatter-fig), there is a negative relationship betw
 ---
 
 
-## 8. Tables
+## 4. Tables
 
 ### R Markdown tables (manual)
 
@@ -570,7 +374,7 @@ The **gt** package (<https://gt.rstudio.com/>) is a modern and powerful tablepac
 ---
 
 
-## 9. Mathematical Equations and Chemical Formulas
+## 5. Mathematical Equations and Chemical Formulas
 
 ### Inline math
 
@@ -659,7 +463,7 @@ $\mathrm{NH_4Cl_{(s)}} \rightleftharpoons \mathrm{NH_{3(g)} + HCl_{(g)}}$
 ---
 
 
-## 10. Citations and Bibliography
+## 6. Citations and Bibliography
 
 ### How it works
 
@@ -752,7 +556,7 @@ All analyses were performed using the statistical software R (version `r paste(R
 ---
 
 
-## 11. Cross-References Summary
+## 7. Cross-References Summary
 
 | Element | Syntax | Rendered example |
 |:---|:---|:---|
@@ -774,7 +578,7 @@ All analyses were performed using the statistical software R (version `r paste(R
 ---
 
 
-## 12. Tips and Troubleshooting
+## 8. Tips and Troubleshooting
 
 ### Version control
 
@@ -845,17 +649,4 @@ To add a new chapter, create a new `.Rmd` file in the `chapter/` folder and add 
 | Comment out section            | Ctrl+Shift+C  | Cmd+Shift+C  |
 | Save                           | Ctrl+S        | Cmd+S        |
 | Visual Editor: Insert citation | Ctrl+Shift+F8 | Cmd+Shift+F8 |
-
-### Useful resources
-
-- [R Markdown: The Definitive Guide](https://yihui.org/rmarkdown/)
-- [bookdown: Authoring Books and Technical Documents](https://yihui.org/bookdown/)
-- [R Markdown Cheatsheet (PDF)](https://rstudio.github.io/cheatsheets/rmarkdown.pdf)
-- [kableExtra documentation](https://haozhu233.github.io/kableExtra/)
-- [flextable documentation](https://ardata-fr.github.io/flextable-book/)
-- [Zotero reference manager](https://www.zotero.org/)
-- [Citation Style Language styles](https://www.zotero.org/styles)
-- [Happy Git and GitHub for the useR](https://happygitwithr.com/)
-
----
 

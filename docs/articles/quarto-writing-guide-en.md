@@ -1,0 +1,696 @@
+# Writing Your Thesis with quarto-UHHthesis
+
+This guide covers everything you need to know about writing your thesis
+with Quarto and the UHHthesis template. It assumes you have already
+installed the template and configured your metadata (see the [Getting
+Started](https://uham-bio.github.io/UHHthesis/articles/quarto-getting-started-en.md)
+guide).
+
+## Markdown Basics
+
+Quarto files (`.qmd`) use Markdown for text formatting. If you are new
+to Markdown, here is a quick reference for the most common elements.
+
+### Text formatting
+
+``` markdown
+**bold text**
+*italic text*
+~~strikethrough~~
+`inline code`
+```
+
+### Lists
+
+Unordered list:
+
+``` markdown
+- Item one
+- Item two
+  - Sub-item (indent with two spaces)
+```
+
+Ordered list:
+
+``` markdown
+1. First item
+2. Second item
+3. Third item
+```
+
+### Block quotes
+
+``` markdown
+> This is a block quote. It will be indented in the output.
+```
+
+### Comments
+
+Content inside HTML comments is not rendered in the output:
+
+``` markdown
+<!-- This text will not appear in the output. -->
+```
+
+### Horizontal rules
+
+``` markdown
+---
+```
+
+### Links
+
+``` markdown
+[Link text](https://example.com)
+```
+
+For a more complete Markdown reference, see the [Quarto Markdown
+Basics](https://quarto.org/docs/authoring/markdown-basics.html)
+documentation.
+
+## Sections and headings
+
+Use Markdown headings for thesis sections:
+
+``` markdown
+# Chapter Title           (level 1 -- e.g., Introduction, Methods)
+## Section                 (level 2 -- e.g., Study Site)
+### Subsection             (level 3 -- e.g., Sampling Design)
+#### Sub-subsection        (level 4)
+```
+
+All levels up to `###` appear in the table of contents by default
+(`toc-depth: 3`).
+
+To create a section **without a number** (e.g., for the References
+heading), add `{.unnumbered}`:
+
+``` markdown
+# References {.unnumbered}
+```
+
+This is already used in the template for the abstract, abbreviations,
+and back matter sections.
+
+## Cross-references
+
+Cross-references are a key feature for academic writing. Quarto uses the
+`@` prefix with type-specific labels.
+
+**Figures:**
+
+``` markdown
+As shown in @fig-location, the sampling site is ...
+```
+
+Figure labels must start with `fig-`. The label is set either in the
+chunk option (`#| label: fig-location`) or in the image syntax
+(`{#fig-location}`).
+
+**Tables:**
+
+``` markdown
+The values in @tbl-kable1 indicate ...
+```
+
+Table labels must start with `tbl-`.
+
+**Equations:**
+
+``` markdown
+Using @eq-mean, we can calculate ...
+```
+
+Equation labels must start with `eq-`.
+
+**Sections:**
+
+``` markdown
+As discussed in the [Discussion], we ...
+```
+
+For section cross-references, simply put the section title in square
+brackets.
+
+> **Important:** Label names should use **hyphens** (not underscores) to
+> separate words, e.g., `fig-base-fig` not `fig_base_fig`. Underscores
+> will break cross-references.
+
+> **Note:** Only figures and tables with a caption can be numbered and
+> cross-referenced. If a figure or table has no caption, it will not
+> receive a number.
+
+## Citations and bibliography
+
+### How it works
+
+The UHHthesis template uses **BibTeX** for managing references. You
+store your references in `bib/references.bib`, and Pandoc’s built-in
+citation processor (**citeproc**) automatically formats them according
+to the citation style defined in `_quarto.yml` (via the `.csl` file).
+
+The reference list is placed automatically where the file
+`chapter/96-references.qmd` appears in the chapter order. You do **not**
+need to write anything in this file — it works automatically.
+
+### BibTeX entry format
+
+Each reference in `references.bib` looks like this:
+
+``` bibtex
+@article{May1976,
+  author  = {May, R. M.},
+  title   = {Simple mathematical models with very complicated dynamics},
+  journal = {Nature},
+  volume  = {261},
+  number  = {5560},
+  pages   = {459-467},
+  year    = {1976},
+  doi     = {10.1038/261459a0}
+}
+```
+
+The first field after the opening brace (`May1976`) is the **citation
+key** — this is what you use to cite the reference in your text.
+
+Common entry types: `@article`, `@book`, `@inproceedings`, `@phdthesis`,
+`@techreport`, `@manual`, `@misc`.
+
+### Citation syntax
+
+| Markdown | Output | Use case |
+|:---|:---|:---|
+| `@May1976` | May (1976) | Author as part of the sentence |
+| `[@May1976]` | (May, 1976) | Parenthetical citation |
+| `[-@May1976]` | \(1976\) | Suppress the author name |
+| `[@May1976; @RN410]` | (May, 1976; Post and Forchhammer, 2002) | Multiple citations |
+| `[@May1976, p. 461]` | (May, 1976, p. 461) | Citation with page number |
+
+**Example in running text:**
+
+``` markdown
+@May1976 demonstrated that simple population models can produce complex
+chaotic dynamics. This finding has since been confirmed by numerous
+studies [@RN410; @kamm2000].
+```
+
+### Changing the citation style
+
+The citation formatting is controlled by the `.csl` file specified in
+`_quarto.yml`. The default is SAGE Harvard style. To use a different
+style:
+
+1.  Find your desired style at <https://www.zotero.org/styles> or
+    <https://github.com/citation-style-language/styles>
+
+2.  Download the `.csl` file and place it in the `bib/` folder
+
+3.  Update `_quarto.yml`:
+
+    ``` yaml
+    bibliography: bib/references.bib
+    csl: bib/your-style.csl
+    ```
+
+### Reference managers
+
+Using a reference manager saves significant time. Recommended options:
+
+- **Zotero** (free, open source) — <https://www.zotero.org/>
+  - Install the [Better
+    BibTeX](https://retorque.re/zotero-better-bibtex/) plugin to
+    automatically export and sync your library to a `.bib` file.
+  - Zotero can import references directly from your browser with one
+    click.
+- **RStudio Visual Editor** — RStudio’s visual editing mode has a
+  built-in citation tool. Switch to visual mode (click the “Visual”
+  button at the top of the editor), then use **Insert \> Citation** to
+  search and insert references from your `.bib` file, DOI lookup, or a
+  connected Zotero library.
+
+### Citing R and packages
+
+At the end of your Material and Methods chapter, you should cite R and
+all packages you used. Use inline R code to insert version numbers
+dynamically:
+
+``` markdown
+All analyses were performed using the statistical software R
+(version 4.5.2)
+[@R-base]. Tables were generated using the packages 'knitr'
+(version 1.51) [@R-knitr], 'kableExtra'
+(version 1.4.0) [@R-kableExtra], and
+'flextable' (version 0.9.10) [@R-flextable].
+Figures were produced with 'ggplot2'
+(version 4.0.1) [@R-ggplot2].
+```
+
+To generate the BibTeX entries for your R packages automatically, add a
+code chunk in your methods chapter (or in `index.qmd`):
+
+```` markdown
+```r
+#| label: generate-package-refs-en
+#| include: false
+
+knitr::write_bib(
+  c("base", "knitr", "kableExtra", "flextable", "ggplot2"),
+  file = "bib/packages.bib"
+)
+```
+````
+
+Then make sure both `.bib` files are listed in `_quarto.yml`:
+
+``` yaml
+bibliography:
+  - bib/references.bib
+  - bib/packages.bib
+```
+
+> **Important:** When you add a new package to your analysis, also add
+> it to the
+> [`knitr::write_bib()`](https://rdrr.io/pkg/knitr/man/write_bib.html)
+> call so that its citation entry is created automatically.
+
+## Images
+
+Insert external images using Markdown syntax. Add a caption and a label
+for cross-referencing:
+
+``` markdown
+![Location of sampling site.](images/sampling_site.jpg){#fig-location width="50%"}
+```
+
+- The caption goes inside `![...]`.
+- The label `{#fig-location}` enables cross-referencing with
+  `@fig-location`.
+- `width="50%"` scales the image to half the page width.
+
+> **Note:** Images must have a caption to be numbered and
+> cross-referenced.
+
+## R-generated figures
+
+Figures produced by R code are placed inside code chunks with `label`
+and `fig-cap` options.
+
+**Scatter plot with ggplot2:**
+
+```` markdown
+```r
+#| label: fig-scatter
+#| fig-cap: "Relationship between horsepower and fuel economy."
+#| out-width: "100%"
+
+library(ggplot2)
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = "red", se = FALSE) +
+  labs(x = "Gross Horsepower", y = "Miles Per Gallon") +
+  theme_minimal()
+```
+````
+
+**Boxplot with ggplot2:**
+
+```` markdown
+```r
+#| label: fig-boxplot
+#| fig-cap: "Fuel economy differences between transmission types."
+#| out-width: "60%"
+#| fig-height: 3
+
+library(ggplot2)
+ggplot(mtcars, aes(x = factor(am, labels = c("Automatic", "Manual")), y = mpg)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.7) +
+  labs(x = "Transmission", y = "Miles Per Gallon") +
+  theme_minimal()
+```
+````
+
+### Chunk options for figures
+
+| Option | Description | Example |
+|:---|:---|:---|
+| `label` | Unique identifier (must start with `fig-`) | `fig-scatter` |
+| `fig-cap` | Caption text | `"My figure caption."` |
+| `out-width` | Output width | `"80%"` or `"4in"` |
+| `fig-height` | Height in inches | `3` |
+| `fig-width` | Width in inches | `6` |
+| `fig-align` | Horizontal alignment | `"center"` |
+
+## Tables
+
+There are several ways to create tables. This section covers the most
+common approaches that work well with this template’s dual PDF/DOCX
+output.
+
+### Markdown tables
+
+Write tables directly in Markdown. Add a caption below the table with
+`: caption` and a label in curly brackets:
+
+``` markdown
+| Column A     | Column B         | Column C       |
+|:-------------|:----------------:|---------------:|
+| left-aligned | center-aligned   | right-aligned  |
+| $123         | $456             | $789           |
+
+: This is a Markdown table. {#tbl-md}
+```
+
+Reference with `@tbl-md`. Markdown tables work well for simple,
+hand-written tables but become cumbersome for larger datasets.
+
+### Tables with *knitr* and *kableExtra*
+
+For tables generated from R data, use
+[`knitr::kable()`](https://rdrr.io/pkg/knitr/man/kable.html) with the
+chunk option `tbl-cap`:
+
+```` markdown
+```r
+#| label: tbl-kable1
+#| tbl-cap: "This table was produced with knitr."
+
+library(knitr)
+library(kableExtra)
+
+df <- mtcars[1:5, 1:6]
+
+if (knitr::is_latex_output()) {
+  kable(df, booktabs = TRUE) |>
+    kable_styling(font_size = 9, latex_options = "hold_position")
+} else {
+  kable(df, longtable = TRUE, booktabs = TRUE)
+}
+```
+````
+
+The `if/else` block ensures appropriate formatting for both PDF and DOCX
+output. PDF uses LaTeX-specific options from *kableExtra*, while DOCX
+uses the simpler default format.
+
+You can add grouped headers, striped rows, and footnotes:
+
+```` markdown
+```r
+#| label: tbl-kable2
+#| tbl-cap: "Motor car data with grouped column headers."
+
+library(knitr)
+library(kableExtra)
+
+df <- mtcars[1:5, 1:6]
+
+if (knitr::is_latex_output()) {
+  kable(df, booktabs = TRUE) |>
+    kable_styling(position = "center", font_size = 9) |>
+    add_header_above(c(" " = 1, "Performance" = 2, "Design" = 2, "Weight" = 1)) |>
+    footnote(general = "Data source: mtcars dataset.")
+} else {
+  kable(df, longtable = TRUE, booktabs = TRUE) |>
+    add_header_above(c(" " = 1, "Performance" = 2, "Design" = 2, "Weight" = 1))
+}
+```
+````
+
+**When to use:** Well-established, widely documented. A good default
+choice if you are already familiar with it.
+
+### Tables with *flextable*
+
+The [flextable](https://ardata-fr.github.io/flextable-book/) package
+produces **identical-looking tables** in both PDF and DOCX without any
+conditional logic. This makes it the most convenient option for this
+template’s dual-output workflow.
+
+Install it once:
+
+``` r
+
+install.packages("flextable")
+```
+
+**Basic example:**
+
+```` markdown
+```r
+#| label: tbl-flex1
+#| tbl-cap: "This table was produced with flextable."
+
+library(flextable)
+
+df <- mtcars[1:5, 1:6]
+
+flextable(df) |>
+  theme_booktabs() |>
+  autofit()
+```
+````
+
+**Customised example with formatting:**
+
+```` markdown
+```r
+#| label: tbl-flex2
+#| tbl-cap: "Summary statistics by cylinder count."
+
+library(flextable)
+library(dplyr)
+
+summary_df <- mtcars |>
+  group_by(cyl) |>
+  summarise(
+    n = n(),
+    mean_mpg = round(mean(mpg), 1),
+    sd_mpg = round(sd(mpg), 1),
+    mean_hp = round(mean(hp), 1)
+  )
+
+flextable(summary_df) |>
+  set_header_labels(
+    cyl = "Cylinders",
+    n = "N",
+    mean_mpg = "Mean MPG",
+    sd_mpg = "SD MPG",
+    mean_hp = "Mean HP"
+  ) |>
+  theme_booktabs() |>
+  autofit() |>
+  align(align = "center", part = "all") |>
+  font(fontname = "Times New Roman", part = "all") |>
+  fontsize(size = 9, part = "all")
+```
+````
+
+Key flextable features:
+
+- **No conditional logic needed** — the same code produces consistent
+  output in PDF and DOCX.
+- `theme_booktabs()` gives a clean academic look (similar to LaTeX
+  booktabs).
+- `autofit()` adjusts column widths automatically.
+- Full control over fonts, alignment, borders, conditional formatting,
+  merged cells, and footnotes.
+- Supports grouped headers, multi-row spanning, and complex layouts.
+
+> **Tip:** See the [flextable
+> book](https://ardata-fr.github.io/flextable-book/) for a comprehensive
+> guide with many examples.
+
+### Tables with *gt*
+
+The [gt](https://gt.rstudio.com/) package provides a modern, expressive
+grammar for building tables. DOCX support has been added more recently
+and is now functional for most use cases.
+
+```` markdown
+```r
+#| label: tbl-gt1
+#| tbl-cap: "This table was produced with gt."
+
+library(gt)
+
+df <- mtcars[1:5, 1:6]
+
+gt(df, rownames_to_stub = TRUE) |>
+  tab_options(
+    table.font.size = px(12)
+  )
+```
+````
+
+**When to use:** If you prefer a tidyverse-style API and want advanced
+features like sparklines, colour scales, or inline plots. Note that some
+advanced formatting options may render differently between PDF and DOCX.
+
+### Which package should I use?
+
+| Package | PDF | DOCX | Same code for both? | Best for |
+|:---|:--:|:--:|:--:|:---|
+| Markdown | ✓ | ✓ | ✓ | Small, hand-written tables |
+| kable/kableExtra | ✓ | ✓ | ✗ (needs `if/else`) | Familiar workflow, many online examples |
+| **flextable** | ✓ | ✓ | **✓** | **Best for dual PDF/DOCX output** |
+| gt | ✓ | ✓ | mostly | Modern API, rich formatting |
+
+**Recommendation:** For this template, **flextable** is the most
+convenient choice because it produces consistent output in both formats
+without any conditional code. If you are already comfortable with
+kable/kableExtra, that works well too — just remember to use the
+`if/else` block shown above.
+
+## Mathematical equations
+
+**Inline math** — use single dollar signs:
+
+``` markdown
+The energy is $E = mc^2$.
+```
+
+**Display math** — use double dollar signs:
+
+``` markdown
+$$
+  \bar{X} = \frac{\sum_{i=1}^n X_i}{n}
+$$
+```
+
+**Numbered equations with labels** — add `{#eq-label}` after the closing
+`$$`:
+
+``` markdown
+$$
+  \bar{X} = \frac{\sum_{i=1}^n X_i}{n}
+$$ {#eq-mean}
+```
+
+Reference with `@eq-mean`. Only number equations that are referenced in
+the text.
+
+**More examples:**
+
+``` markdown
+$$
+  f_{Y}(y) = \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{y^2}{2} \right\}
+$$ {#eq-density-norm}
+```
+
+> **Important:** Do not leave a space between the `$` and the
+> mathematical notation.
+
+## Chemical formulas
+
+Use LaTeX math mode with `\mathrm{}` to prevent italic typesetting:
+
+``` markdown
+- Water: $\mathrm{H_2O}$
+- Carbon dioxide: $\mathrm{CO_2}$
+- Methane: $\mathrm{CH_4}$
+- Chromite: $\mathrm{Fe_2^{2+}Cr_2O_4}$
+```
+
+### Useful symbols for chemistry
+
+| Symbol               | Markdown               | Example |
+|:---------------------|:-----------------------|:--------|
+| Subscript            | `$\mathrm{CH_4}$`      | CH₄     |
+| Superscript (charge) | `$\mathrm{O^-}$`       | O⁻      |
+| Reaction arrow       | `$\longrightarrow$`    | →       |
+| Reversible arrow     | `$\rightleftharpoons$` | ⇌       |
+| Resonance arrow      | `$\leftrightarrow$`    | ↔︎       |
+| Delta                | `$\Delta$`             | Δ       |
+| Bullet (hydrate)     | `$\bullet$`            | •       |
+
+### Reaction equations
+
+Chemical reaction equations can be numbered and cross-referenced just
+like mathematical equations:
+
+``` markdown
+$$
+  \mathrm{C_6H_{12}O_6 + 6O_2} \longrightarrow \mathrm{6CO_2 + 6H_2O}
+$$ {#eq-reaction}
+```
+
+Reference with `@eq-reaction`.
+
+For unnumbered inline reactions, use dollar signs:
+
+``` markdown
+$\mathrm{NH_4Cl_{(s)}} \rightleftharpoons \mathrm{NH_{3(g)} + HCl_{(g)}}$
+```
+
+## Inline R code
+
+You can embed R expressions directly in text to insert computed values:
+
+``` markdown
+The dataset contains 32 observations.
+The mean fuel economy is 20.1 miles per gallon.
+```
+
+This is particularly useful in the Material and Methods chapter for
+citing software versions automatically (see [Citing R and
+packages](#citing-r-and-packages)).
+
+> **Note:** For inline R code to work, the `.qmd` file must contain at
+> least one R code chunk (even a hidden one), so that Quarto uses knitr
+> as the computation engine. The template already includes the necessary
+> setup chunks.
+
+## Code chunks and their options
+
+Code chunks use the ```` ```{r} ```` fence with YAML-style options
+prefixed by `#|`:
+
+```` markdown
+```r
+#| label: fig-my-plot
+#| fig-cap: "A descriptive caption."
+#| echo: false
+#| warning: false
+#| out-width: "80%"
+
+plot(1:10)
+```
+````
+
+Commonly used chunk options:
+
+| Option      | Description                                    | Default |
+|:------------|:-----------------------------------------------|:--------|
+| `label`     | Unique chunk identifier                        | —       |
+| `echo`      | Show the R code in output                      | `false` |
+| `eval`      | Execute the code                               | `true`  |
+| `warning`   | Show warnings                                  | `false` |
+| `message`   | Show messages                                  | `false` |
+| `include`   | Include chunk output at all                    | `true`  |
+| `cache`     | Cache results to speed up re-rendering         | `false` |
+| `fig-cap`   | Figure caption                                 | —       |
+| `tbl-cap`   | Table caption                                  | —       |
+| `out-width` | Output width                                   | —       |
+| `results`   | How to treat results (`"asis"` for raw output) | —       |
+
+The defaults for `echo`, `warning`, and `message` are set globally in
+`_quarto.yml` under `execute:`, so you generally don’t need to repeat
+them in every chunk.
+
+## Page breaks
+
+Insert a page break (works in both PDF and DOCX):
+
+``` markdown
+{{< pagebreak >}}
+```
+
+## Conditional content (PDF vs. DOCX)
+
+Some content only makes sense in one format (e.g., LaTeX commands for
+PDF, or manual placeholders for DOCX). Use Quarto’s content visibility
+divs:
+
+**Show only in PDF:**
+
+\`\`\`markdown ::: {.content-visible when-format=“pdf”}

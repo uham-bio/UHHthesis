@@ -1,0 +1,115 @@
+url: https://uham-bio.github.io/UHHthesis/
+
+authors:
+  Saskia Otto:
+    href: https://github.com/saskiaotto
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#0271BB"
+    link-color: "#0271BB"
+home:
+  title: "UHHthesis – R Markdown & Quarto Templates for Bachelor or Master Thesis at the UHH"
+  description: >
+    Ready-to-use thesis templates for Bachelor's and Master's theses in PDF and Word,
+    promoting reproducible research. Designed for the Department of Biology,
+    University of Hamburg. Supports both R Markdown (via bookdown) and Quarto.
+  sidebar:
+    structure: [links, license, authors, dev]
+    components:
+      links:
+        title: Links
+        text: >
+          [GitHub repository – R package](https://github.com/uham-bio/UHHthesis)<br>
+          [GitHub repository – Quarto extension](https://github.com/uham-bio/quarto-UHHthesis)
+
+navbar:
+  bg: primary
+  structure:
+    left:  [reference, articles, quarto-ext, gallery, news]
+    right: [github]
+  components:
+    articles:
+      text: R Markdown
+      menu:
+      - text: "Getting Started (EN)"
+        href: articles/uhhthesis-getting-started-en.html
+      - text: "Erste Schritte (DE)"
+        href: articles/uhhthesis-getting-started-de.html
+      - text: "---"
+      - text: "Writing Your Thesis (EN)"
+        href: articles/uhhthesis-tutorial-en.html
+      - text: "Abschlussarbeit schreiben (DE)"
+        href: articles/uhhthesis-tutorial-de.html
+    quarto-ext:
+      text: Quarto Extension
+      menu:
+      - text: "Getting Started (EN)"
+        href: articles/quarto-getting-started-en.html
+      - text: "Erste Schritte (DE)"
+        href: articles/quarto-getting-started-de.html
+      - text: "---"
+      - text: "Writing Guide (EN)"
+        href: articles/quarto-writing-guide-en.html
+      - text: "Schreibanleitung (DE)"
+        href: articles/quarto-writing-guide-de.html
+    gallery:
+      text: Template gallery
+      href: articles/gallery.html
+
+footer:
+  structure:
+    left: developed_by
+    right: built_with
+
+reference:
+  - title: "R Markdown output formats"
+    desc: >
+      Output format functions for use in the YAML header of `.Rmd` files.
+      Each function returns a bookdown output format object that can be
+      passed to `bookdown::render_book()`.
+    contents:
+      - thesis_pdf_de
+      - thesis_pdf_en
+      - thesis_word_de
+      - thesis_word_en
+
+  - title: "Package"
+    contents:
+      - UHHthesis-package
+
+articles:
+  - title: "R Markdown – Getting Started"
+    navbar: ~
+    contents:
+      - uhhthesis-getting-started-en
+      - uhhthesis-getting-started-de
+
+  - title: "R Markdown – Writing Guide"
+    navbar: ~
+    contents:
+      - uhhthesis-tutorial-en
+      - uhhthesis-tutorial-de
+
+  - title: "Quarto Extension – Getting Started"
+    navbar: ~
+    contents:
+      - quarto-getting-started-en
+      - quarto-getting-started-de
+
+  - title: "Quarto Extension – Writing Guide"
+    navbar: ~
+    contents:
+      - quarto-writing-guide-en
+      - quarto-writing-guide-de
+
+  - title: "Template gallery"
+    navbar: ~
+    contents:
+      - gallery
+
+news:
+  releases:
+    - text: "Version 0.2.0"
+      href: https://github.com/uham-bio/UHHthesis/releases

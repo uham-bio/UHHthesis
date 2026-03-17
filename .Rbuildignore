@@ -15,3 +15,5 @@
 ^index.Rmd$
 ^resources
 ^\.github$
+^vignettes/gallery\.Rmd$
+^vignettes/quarto-.*\.Rmd$

@@ -1,0 +1,365 @@
+# Getting Started with quarto-UHHthesis
+
+This guide walks you through installing the quarto-UHHthesis template,
+filling in your thesis metadata, and rendering your first PDF and Word
+document. Once you are set up, head over to the [Writing
+Guide](https://uham-bio.github.io/UHHthesis/articles/quarto-writing-guide-en.md)
+for everything about cross-references, citations, figures, tables, and
+more.
+
+## Prerequisites
+
+### Required software
+
+| Software | Version | Link                                   |
+|:---------|:--------|:---------------------------------------|
+| Quarto   | \>= 1.3 | <https://quarto.org/docs/get-started/> |
+| R        | \>= 4.0 | <https://cran.r-project.org/>          |
+| LaTeX    | any     | see below (TinyTeX recommended)        |
+
+[Pandoc](https://pandoc.org/) is bundled with Quarto — no separate
+installation needed.
+
+### Installing TinyTeX
+
+For PDF output you need a LaTeX distribution. The easiest cross-platform
+option is [TinyTeX](https://yihui.org/tinytex/), a lightweight
+distribution based on TeX Live. Install it from R:
+
+``` r
+
+install.packages("tinytex")
+tinytex::install_tinytex()
+
+# After restarting your IDE, confirm the installation with
+tinytex::is_tinytex()
+```
+
+TinyTeX is small but covers most packages you will need. Missing LaTeX
+packages are usually installed automatically on first use. If you
+already have a LaTeX distribution installed (e.g. TeX Live or MacTeX),
+you can use that instead.
+
+You do **not** need to learn LaTeX to use this template — the Quarto
+files use Markdown syntax, and the extension handles all LaTeX
+formatting behind the scenes.
+
+### Recommended R packages
+
+The template uses these packages in its example code chunks. Install
+them once:
+
+``` r
+
+install.packages(c("knitr", "kableExtra", "flextable", "ggplot2"))
+```
+
+## Installation
+
+### Opening a terminal
+
+The template is installed via a **terminal** (a command-line shell),
+*not* from the R console. If you have only used the R console or the
+“Knit” button in RStudio so far, here is where to find a terminal in
+your editor:
+
+- **RStudio:** Look at the bottom of the window. Next to the **Console**
+  tab you will see a **Terminal** tab — click it. If no Terminal tab is
+  visible, go to **Tools → Terminal → New Terminal**.
+- **Positron:** The **Terminal** panel is at the bottom of the window,
+  next to the Console.
+- **VS Code:** Open the integrated terminal with **View → Terminal** (or
+  press `` Ctrl+` ``).
+- **No IDE:** Open *Terminal* (macOS), *PowerShell* (Windows), or your
+  Linux terminal emulator.
+
+> **Console vs. Terminal:** The R *Console* runs R code (you see `>` as
+> the prompt). The *Terminal* runs system commands like `quarto` (you
+> typically see `$` or `PS>` as the prompt). Make sure you type the
+> commands below into the **Terminal**, not the Console.
+
+### Running the install command
+
+First, navigate to the folder where you want your thesis project to be
+created. For example, if you want it inside your Documents folder:
+
+``` bash
+# macOS / Linux
+cd ~/Documents
+
+# Windows (PowerShell)
+cd ~\Documents
+```
+
+Then run one of the following commands:
+
+``` bash
+# English template
+quarto use template uham-bio/quarto-UHHthesis/en
+
+# German template
+quarto use template uham-bio/quarto-UHHthesis/de
+```
+
+Quarto will ask two questions — answer **Yes** to both:
+
+1.  A directory name for your new project (e.g., `my-thesis`)
+2.  Whether to install the UHHthesis extension
+
+This creates a ready-to-use folder with all template files.
+
+### Verify your setup
+
+Once the installation finishes, open the new project folder in your
+editor and render the template immediately — before changing anything:
+
+``` bash
+cd my-thesis
+quarto render
+```
+
+If both a PDF and a DOCX file appear in the `thesis-output/` directory,
+everything is working. The example content in the chapter files
+demonstrates all features in action and serves as documentation.
+
+## Project Structure
+
+After installation, your project looks like this:
+
+    my-thesis/
+    ├── _quarto.yml              # Main configuration (title, author, formats, bibliography)
+    ├── index.qmd                # Entry point (title page metadata, abstract includes, LoF/LoT)
+    ├── _extensions/UHHthesis/   # Format extension (do not edit)
+    │   ├── _extension.yml
+    │   ├── template.tex         # LaTeX template for PDF
+    │   └── uhh-template.docx    # Word reference template for DOCX
+    ├── prelim/                  # Preliminary sections (before chapter 1)
+    │   ├── 00-abstract.qmd
+    │   ├── 00-zusammenfassung.qmd
+    │   └── 00-abbreviations.qmd
+    ├── chapter/                 # Thesis chapters and back matter
+    │   ├── 01-intro.qmd
+    │   ├── 02-methods.qmd
+    │   ├── 03-results.qmd
+    │   ├── 04-discussion.qmd
+    │   ├── 96-references.qmd
+    │   ├── 97-acknowledge.qmd
+    │   ├── 98-appendix.qmd
+    │   └── 99-declaration.qmd
+    ├── bib/                     # Bibliography and citation style
+    │   ├── references.bib
+    │   └── sage-harvard.csl
+    ├── data/                    # Data files (e.g., CSV)
+    └── images/                  # Images and logos
+
+**How rendering works:** `_quarto.yml` configures the book project →
+`quarto render` processes all `.qmd` files → the UHHthesis extension
+applies the PDF or DOCX template → output appears in the
+`thesis-output/` directory.
+
+## Filling in Your Metadata
+
+The title page is built from metadata in **two files**. Both files need
+to be edited because PDF and DOCX read from different sources.
+
+### Step 1: Edit `_quarto.yml`
+
+Open `_quarto.yml` and update the `book:` section. This metadata is used
+primarily for the **DOCX cover page** (Pandoc maps `title`, `subtitle`,
+and `author` to Word cover page styles):
+
+``` yaml
+book:
+  title: "Your Thesis Title"               # ← Your title
+  subtitle: |
+    submitted by\
+    Your Name\                              # ← Your full name
+    born on 1. January 2000                 # ← Your date of birth
+  author:
+    - "Bachelor's Thesis"                   # ← or "Master's Thesis"
+    - "in the degree program Bachelor of Science Biology"  # ← Your program
+    - "at the University of Hamburg"
+    - ""
+    - "submitted on 1. April 2025"          # ← Submission date
+    - "Advisor: Prof. Dr. First Advisor"    # ← First advisor
+    - "Advisor: Prof. Dr. Second Advisor"   # ← Second advisor
+
+  output-file: "LastName_BSc_2025"          # ← Output filename (without extension)
+```
+
+### Step 2: Edit `index.qmd`
+
+Open `index.qmd` and update the YAML header at the top. These fields are
+used for the **PDF title page** (read by `template.tex`):
+
+``` yaml
+---
+thesis_author: "Your Name"
+type: "Bachelor's Thesis"
+birth: "1. January 2000"
+degree_program: "Bachelor of Science Biology"
+submit_date: "1. April 2025"
+advisor1: "Prof. Dr. First Advisor"
+advisor2: "Prof. Dr. Second Advisor"
+---
+```
+
+> **Why two files?** The PDF title page is built by a LaTeX template
+> that reads custom variables from `index.qmd`. The DOCX cover page is
+> built by Pandoc, which only recognises standard fields (`title`,
+> `subtitle`, `author`) from `_quarto.yml`. Keeping both in sync ensures
+> consistent title pages across formats.
+
+### Bachelor vs. Master
+
+Change two values in both files:
+
+| Field | Bachelor | Master |
+|:---|:---|:---|
+| `type` | `"Bachelor's Thesis"` | `"Master's Thesis"` |
+| `degree_program` | `"Bachelor of Science Biology"` | `"Master of Science Marine Ecosystem and Fisheries Sciences"` |
+
+For the **German template**, use:
+
+| Field | Bachelor | Master |
+|:---|:---|:---|
+| `type` | `"Bachelorarbeit"` | `"Masterarbeit"` |
+| `degree_program` | `"Bachelor of Science Biologie"` | `"Master of Science ..."` |
+
+## Rendering Your Thesis
+
+### From the terminal (all editors)
+
+``` bash
+# Render both PDF and DOCX
+quarto render
+
+# Render PDF only
+quarto render --to UHHthesis-pdf
+
+# Render Word only
+quarto render --to UHHthesis-docx
+```
+
+Output files are placed in the `thesis-output/` directory.
+
+### From RStudio
+
+1.  Open the project folder via **File → Open Project** and select the
+    project directory. (If you prefer, you can create an `.Rproj` file
+    first via **File → New Project → Existing Directory** — this makes
+    reopening the project easier, but is not required.)
+2.  To render the full thesis, go to the **Build** pane and click
+    **Render Book**. This renders all chapters in the correct order.
+3.  To render only the currently open `.qmd` file for a quick preview,
+    click the **Render** button (or press `Ctrl+Shift+K` /
+    `Cmd+Shift+K`). Note that this renders only that single file, not
+    the complete thesis.
+
+> **Tip:** For the final thesis, always use **Build → Render Book** or
+> `quarto render` in the terminal to ensure all chapters,
+> cross-references, and the table of contents are up to date.
+
+### From Positron
+
+1.  Open the project folder via **File → Open Folder**.
+2.  Open `index.qmd`.
+3.  Click the **Preview** button for a quick preview, or use the
+    terminal commands above to render the full thesis.
+
+### From VS Code
+
+1.  Open the project folder via **File → Open Folder**.
+2.  Open the integrated terminal (**View → Terminal** or `` Ctrl+` ``).
+3.  Run the `quarto render` commands listed above.
+
+> **Tip:** Install the [Quarto VS Code
+> Extension](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)
+> for syntax highlighting, `.qmd` preview, and a Render button in the
+> editor.
+
+## Adding or Removing Chapters
+
+To add a new chapter, create a `.qmd` file in the `chapter/` directory
+and add it to the chapter list in `_quarto.yml`:
+
+``` yaml
+book:
+  chapters:
+    - index.qmd
+    - chapter/01-intro.qmd
+    - chapter/02-methods.qmd
+    - chapter/03-results.qmd
+    - chapter/04-discussion.qmd
+    - chapter/05-my-new-chapter.qmd    # ← new chapter
+    - chapter/96-references.qmd
+  appendices:
+    - chapter/97-acknowledge.qmd
+    - chapter/98-appendix.qmd
+    - chapter/99-declaration.qmd
+```
+
+Chapters are numbered automatically in the order listed. To remove a
+chapter, delete its entry from `_quarto.yml` (you can keep or delete the
+`.qmd` file itself).
+
+## Appendices
+
+Appendices are defined in `_quarto.yml` under `book: appendices:` and
+receive automatic lettering (A, B, C, …):
+
+``` yaml
+book:
+  appendices:
+    - chapter/97-acknowledge.qmd     # → Appendix A
+    - chapter/98-appendix.qmd        # → Appendix B
+    - chapter/99-declaration.qmd     # → Appendix C
+```
+
+All figures and tables in the appendix should have captions and can be
+cross-referenced from the main text.
+
+## Declaration of Authorship
+
+The declaration of authorship (*Eidesstattliche Versicherung*) is
+required for all theses. It is the last section in the template.
+
+- **PDF output:** The template automatically inserts the thesis type
+  (e.g., “Bachelor’s Thesis” or “Bachelorarbeit”), the date, and your
+  name from the YAML metadata.
+- **DOCX output:** You need to manually replace the placeholders (e.g.,
+  `[BACHELOR/MASTER THESIS]`, `[DATE]`, `[FIRST NAME AND SURNAME]`) in
+  the generated Word file, then print and sign it.
+
+## What to Do Next
+
+1.  **Start writing** — open the chapter files in `chapter/` and replace
+    the example content with your own. Each file contains instructional
+    comments that you can delete once you have read them.
+2.  **Learn the syntax** — see the [Writing
+    Guide](https://uham-bio.github.io/UHHthesis/articles/quarto-writing-guide-en.md)
+    for cross-references, citations, figures, tables, equations, and
+    more.
+3.  **Set up your bibliography** — add your references to
+    `bib/references.bib`, or use [Zotero](https://www.zotero.org/) with
+    the [Better BibTeX](https://retorque.re/zotero-better-bibtex/)
+    plugin to auto-export your library.
+4.  **Use version control** — consider tracking your thesis with Git and
+    GitHub or GitLab (provided by UHH). This protects against data loss
+    and makes collaboration with your advisor easier.
+
+## Troubleshooting
+
+| Problem | Solution |
+|:---|:---|
+| `LaTeX Error` or `tlmgr` errors | Install TinyTeX: [`tinytex::install_tinytex()`](https://rdrr.io/pkg/tinytex/man/install_tinytex.html) in R |
+| `Error in library(...)` | Install the missing R package: `install.packages("packagename")` |
+| `Format UHHthesis-pdf not found` | Make sure `_extensions/UHHthesis/` exists in your project folder |
+| Output file not updating | Delete the `thesis-output/` folder and re-render |
+| Inline R code shows literal backticks | The `.qmd` file needs at least one R code chunk so Quarto uses knitr |
+| Terminal shows `quarto: command not found` | Quarto is not installed or not on your PATH — reinstall from <https://quarto.org/docs/get-started/> |
+| RStudio Console says `Error: unexpected input` | You typed a terminal command into the R Console instead of the Terminal tab |
+
+For more help, see the [Quarto
+documentation](https://quarto.org/docs/guide/) or open an issue at the
+[project repository](https://github.com/uham-bio/quarto-UHHthesis).

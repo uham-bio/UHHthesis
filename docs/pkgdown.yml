@@ -1,0 +1,17 @@
+pandoc: '3.9'
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  gallery: gallery.html
+  quarto-getting-started-de: quarto-getting-started-de.html
+  quarto-getting-started-en: quarto-getting-started-en.html
+  quarto-writing-guide-de: quarto-writing-guide-de.html
+  quarto-writing-guide-en: quarto-writing-guide-en.html
+  uhhthesis-getting-started-de: uhhthesis-getting-started-de.html
+  uhhthesis-getting-started-en: uhhthesis-getting-started-en.html
+  uhhthesis-tutorial-de: uhhthesis-tutorial-de.html
+  uhhthesis-tutorial-en: uhhthesis-tutorial-en.html
+last_built: 2026-03-17T23:19Z
+urls:
+  reference: https://uham-bio.github.io/UHHthesis/reference
+  article: https://uham-bio.github.io/UHHthesis/articles
