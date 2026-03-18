@@ -2,11 +2,10 @@
   display: none;
 }
 
-
+// Change colour of navigation bar to UHH stone-grey
 .navbar {
-  background-color: #3b515b !important;  /* rot */
+  background-color: #3b515b !important;
 }
-
 
 .navbar .nav-link,
 .navbar .navbar-brand {
@@ -14,5 +13,5 @@
 }
 
 .navbar .nav-link:hover {
-  color: #f8d7da !important;
+  color: #B2BABD !important;
 }
